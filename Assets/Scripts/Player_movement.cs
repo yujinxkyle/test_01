@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,12 +11,15 @@ public class NewBehaviourScript : MonoBehaviour
 
     private int keysCollected = 0;
 
-
     private SpriteRenderer spriteRenderer;
+    private AudioManager audioManager; 
+    private DoorController door;
 
     void Start()
     {
+        audioManager = FindObjectOfType<AudioManager>(); 
         spriteRenderer = GetComponent<SpriteRenderer>();
+        door = FindObjectOfType<DoorController>();
     }
 
     // Update is called once per frame
@@ -59,8 +63,8 @@ public class NewBehaviourScript : MonoBehaviour
             GameObject wall_1 = GameObject.Find("temporary_wall_2");
             if (keysCollected >= 2 && wall_1 != null)
             {
+                door.StageComplete();
                 Destroy(wall_1);
-
             }
 
         }
@@ -68,6 +72,9 @@ public class NewBehaviourScript : MonoBehaviour
         else if (collision.gameObject.tag == "Obstacles")
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            AudioManager.Instance.PlaySFX("Death");
+            audioManager.musicSource.Stop();
+            audioManager.IsDead();
         }
         //prevent player to pass through walls
         else if (Input.GetKey(KeyCode.W))
