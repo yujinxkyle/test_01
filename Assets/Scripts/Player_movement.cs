@@ -14,6 +14,7 @@ public class NewBehaviourScript : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private AudioManager audioManager; 
     private DoorController door;
+    public bool PlayerDeath = false;
 
     void Start()
     {
@@ -75,6 +76,7 @@ public class NewBehaviourScript : MonoBehaviour
             AudioManager.Instance.PlaySFX("Death");
             audioManager.musicSource.Stop();
             audioManager.IsDead();
+            PlayerDeath = true;
         }
         //prevent player to pass through walls
         else if (Input.GetKey(KeyCode.W))
